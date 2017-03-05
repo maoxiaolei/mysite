@@ -1,0 +1,15 @@
+{#{% load static %}#}
+{#<link rel="stylesheet" type="text/css" href="{% static 'exam/style.css' %}" />#}
+
+{% load static %}
+{% if filenames %}
+    <ul>
+    {% for a,b,osfilenames in filenames %}
+        {% for filename in osfilenames %}
+            <a href="{% static filename %}">{{ filename }}</a>
+        {% endfor %}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No exam are available.</p>
+{% endif %}

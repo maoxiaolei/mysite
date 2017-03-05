@@ -1,0 +1,21 @@
+{#{% load static %}#}
+{#<link rel="stylesheet" type="text/css" href="{% static 'exam/style.css' %}" />#}
+<a href="/exam/generate/">自动生成试卷</a>
+
+{% if question_list %}
+    <ul>
+    {% for question in question_list %}
+        <li><a href="{% url 'exam:detail' question.id %}">{{ question.question_text }}</a></li>
+        {% for choice in question.choice_set.all %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+        {% endfor %}
+        {% for content in question.content_set.all %}
+            <input type="radio" name="content" id="content{{ forloop.counter }}" value="{{ content.id }}" />
+            <label for="content{{ forloop.counter }}">{{ content.content_text }}</label><br />
+        {% endfor %}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No exam are available.</p>
+{% endif %}
