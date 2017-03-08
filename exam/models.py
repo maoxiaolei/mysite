@@ -15,6 +15,13 @@ class Question(models.Model):
     )
     question_class = models.SmallIntegerField('题目类型',choices=choices)
 
+    class Meta:
+        permissions = (
+            ("view_task", "Can see available tasks"),
+            ("change_task_status", "Can change the status of tasks"),
+            ("close_task", "Can remove a task by setting its status as closed"),
+        )
+
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     abc = models.CharField(max_length=10,null=True)

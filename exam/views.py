@@ -6,13 +6,15 @@ from django.views import generic
 from .models import Question
 from django.urls import reverse
 from docx import Document
+from django.utils import timezone
+import time
 import os
+from django.contrib.auth.decorators import login_required
 
 
 class IndexView(generic.ListView):
     template_name = 'exam/index.html'
     context_object_name = 'question_list'
-
     def get_queryset(self):
         return Question.objects.all()
 
@@ -20,6 +22,8 @@ class DetailView(generic.DetailView):
     model = Question
     template_name = 'exam/detail.html'
 
+
+@login_required()
 def generate(request):
     document = Document()
 
@@ -44,9 +48,9 @@ def generate(request):
 
     document.add_page_break()
 
-    document.save('result/demo.docx')
+    document.save('exam/static/demo'+time.strftime('%Y-%m-%d %H%M%S',time.localtime(time.time()))+'.docx')
 
-    rootdir = 'result'
+    rootdir = 'exam/static/'
     filenames = os.walk(rootdir)
     return render(request, 'exam/generate.html', {
         'filenames': filenames,
